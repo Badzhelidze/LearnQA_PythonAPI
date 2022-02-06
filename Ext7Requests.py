@@ -20,11 +20,9 @@ print("======================================================================")
 print("Задание №2: ")
 response2_1 = requests.head("https://playground.learnqa.ru/ajax/api/compare_query_type")
 print("Ответ сервера по заданию №2 для HEAD-запроса = " + response2_1.text)
-print("======================================================================")
 
 response2_2 = requests.patch("https://playground.learnqa.ru/ajax/api/compare_query_type")
 print("Ответ сервера по заданию №2 для PATCH-запроса = " + response2_2.text)
-print("======================================================================")
 
 response2_3 = requests.options("https://playground.learnqa.ru/ajax/api/compare_query_type")
 print("Ответ сервера по заданию №2 для OPTIONS-запроса = " + response2_3.text)
@@ -52,6 +50,7 @@ delete_param = {"method": "DELETE"}
 delete_response = requests.delete("https://playground.learnqa.ru/ajax/api/compare_query_type", data=delete_param)
 print(delete_response.text)
 print("======================================================================")
+
 # Задание №4
 print("Задание №4: ")
 meth_lst = [{"method": "GET"}, {"method": "POST"}, {"method": "PUT"}, {"method": "DELETE"}]
