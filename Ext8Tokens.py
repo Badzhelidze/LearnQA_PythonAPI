@@ -36,7 +36,7 @@ content3 = json.loads(response3.content)
 actual_status = (content3["status"])
 result_field = (content3["result"])
 try:
-    assert actual_status == "Job is ready9"
+    assert actual_status == "Job is ready"
     assert result_field is not None
     print(f'Получен статус = {actual_status}. Задача выполнена успешно!')
 except AssertionError:
