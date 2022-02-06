@@ -1,6 +1,8 @@
 import json
 import time
 import requests
+import sys
+import traceback
 
 # Script #1 - создаём задачу.
 response1 = requests.get("https://playground.learnqa.ru/ajax/api/longtime_job")
@@ -15,8 +17,11 @@ print(response1.text)
 response2 = requests.get("https://playground.learnqa.ru/ajax/api/longtime_job", params=payload)
 content2 = json.loads(response2.content)
 status = (content2["status"])
-if status == "Job is NOT ready":
+try:
+    assert status == "Job is NOT ready"
     print(f'При запросе с token ДО того как задача готова получаем статус = "{status}"')
+except AssertionError:
+    print(f'!!!!Что-то пошло не так. Статус отличается от искомого "Job is NOT ready" и равен = {status} !!!!!')
 
 
 # Script #3 - ждем нужное количество секунд.
@@ -33,7 +38,7 @@ content3 = json.loads(response3.content)
 actual_status = (content3["status"])
 result_field = (content3["result"])
 try:
-    assert actual_status == "Job is ready"
+    assert actual_status == "Job is ready9"
     assert result_field is not None
     print(f'Получен статус = {actual_status}. Задача выполнена успешно!')
 except AssertionError:
