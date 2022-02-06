@@ -1,8 +1,6 @@
 import json
 import time
 import requests
-import sys
-import traceback
 
 # Script #1 - создаём задачу.
 response1 = requests.get("https://playground.learnqa.ru/ajax/api/longtime_job")
