@@ -52,7 +52,19 @@ print(delete_response.text)
 print("======================================================================")
 
 # Задание №4
-print("Задание №4: ")
+print("Задание №4. Получаем  комбинации реальных типов запроса и значений параметров ")
+methods = ["get", "post", "put", "delete"]
+list_of_meth_params = [{"method": "GET"}, {"method": "POST"}, {"method": "PUT"}, {"method": "DELETE"}]
+
+for i in methods:
+        for param in list_of_meth_params:
+                response4_1 = requests.request(i,"https://playground.learnqa.ru/ajax/api/compare_query_type", params=param)
+                print(f"Метод {i} с параметром params={param} получает '{response4_1.text}'. Код ответа сервера {response4_1.status_code}.")
+print("======================================================================")
+
+
+# Задание №4 - Дополнение
+print("Дополнение к заданию №4. Получаем все возможные комбинации методов и параметров ")
 meth_lst = [{"method": "GET"}, {"method": "POST"}, {"method": "PUT"}, {"method": "DELETE"}]
 
 for parameter in meth_lst:
