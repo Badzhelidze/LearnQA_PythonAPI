@@ -5,4 +5,4 @@ class Test_ShortPhrase:
         length_of_phrase = len(phrase)
         assert len(
             phrase) < 15, f"Вы ввели слишком длинную фразу, размер которой превышает целевое значение на {length_of_phrase - 15} шт."
-        print(f"Вы успешно ввели фразу: '{phrase}' длиной {length_of_phrase} символов")
+        print(f"Вы успешно ввели фразу: '{phrase}' длиной {length_of_phrase} символ[ов]")
