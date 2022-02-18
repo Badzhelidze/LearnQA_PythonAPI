@@ -11,12 +11,14 @@ class TestUserGet(BaseCase):
         Assertions.assert_json_has_not_key(response, "firstName")
         Assertions.assert_json_has_not_key(response, "lastName")
 
-    def test_get_user_details_auth_as_same_user(self):
-        data = {
+    def setup(self):
+        self.data = {
             'email': 'vinkotov@example.com',
             'password': '1234'
         }
-        response1 = MyRequests.post("/user/login", data=data)
+
+    def test_get_user_details_auth_as_same_user(self):
+        response1 = MyRequests.post("/user/login", data=self.data)
 
         auth_sid = self.get_cookie(response1, "auth_sid")
         token = self.get_header(response1, "x-csrf-token")
@@ -29,15 +31,10 @@ class TestUserGet(BaseCase):
         expected_fields = ["username", "email", "firstName", "lastName"]
         Assertions.assert_json_has_keys(response2, expected_fields)
 
-    # нужно написать тест, который авторизовывается одним пользователем, но получает данные другого (т.е. с другим ID).
+    # Нужно написать тест, который авторизовывается одним пользователем, но получает данные другого (т.е. с другим ID).
     # И убедиться, что в этом случае запрос также получает только username, так как мы не должны видеть остальные данные чужого пользователя.
     def test_get_user_details_auth_as_other_user(self):
-        data = {
-            'email': 'vinkotov@example.com',
-            'password': '1234'
-        }
-
-        response1 = MyRequests.post("/user/login", data=data)
+        response1 = MyRequests.post("/user/login", data=self.data)
 
         auth_sid = self.get_cookie(response1, "auth_sid")
         token = self.get_header(response1, "x-csrf-token")
