@@ -2,12 +2,19 @@ import time
 from random import choice
 from string import ascii_letters
 
+import allure
+
 from lib.assertions import Assertions
 from lib.base_case import BaseCase
 from lib.my_requests import MyRequests
 
 
+@allure.epic("EDITING CASES")
+@allure.story("Cases for testing editing")
 class TestUserEdit(BaseCase):
+    @allure.step
+    @allure.title("Edit new user data")
+    @allure.description("Метод для редактирования вновь созданного пользователя")
     def test_edit_just_created_user(self):
         # REGISTER
         register_data = self.prepare_registration_data()
@@ -46,7 +53,12 @@ class TestUserEdit(BaseCase):
                                    )
         Assertions.assert_json_value_by_name(response4, "firstName", new_name, "Wrong name of the user after edit")
 
-    # Попытаемся изменить данные пользователя, будучи неавторизованными.
+    @allure.step
+    @allure.link('https://software-testing.ru/lms/mod/assign/view.php?id=244504')
+    @allure.title("Edit user data without authorization")
+    @allure.testcase('https://software-testing.ru/lms/mod/assign/view.php?id=244504', 'Edit user data without authorization')
+    @allure.description("Попытаемся изменить данные пользователя, будучи неавторизованными.")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_edit_user_being_unauthorized(self):
         # REGISTER
         register_data = self.prepare_registration_data()
@@ -68,8 +80,12 @@ class TestUserEdit(BaseCase):
         Assertions.assert_json_value_by_name(response2, "username", f"{register_data['username']}",
                                              f"Полученное имя пользователя отличается от целевого {register_data['username']}")
 
-
-        # Попытаемся изменить данные пользователя, будучи авторизованными другим пользователем
+    @allure.step
+    @allure.link('https://software-testing.ru/lms/mod/assign/view.php?id=244504')
+    @allure.title("Edit user data with authorization of another user")
+    @allure.testcase('https://software-testing.ru/lms/mod/assign/view.php?id=244504', 'Edit user data with authorization of another user')
+    @allure.description("Попытаемся изменить данные пользователя, будучи авторизованными другим пользователем")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_edit_user_being_authorized_by_other(self):
         # Регистрируем первого пользователя
         register_data = self.prepare_registration_data()
@@ -124,7 +140,13 @@ class TestUserEdit(BaseCase):
         Assertions.assert_json_value_by_name(response2, "username", f"{new_username}",
                                              f"Полученное имя пользователя отличается от конечного {new_username}")
 
-    # Попытаемся изменить email пользователя, будучи авторизованными тем же пользователем, на новый email без символа @.
+    @allure.step
+    @allure.link('https://software-testing.ru/lms/mod/assign/view.php?id=244504')
+    @allure.title("EDIT @ without AT")
+    @allure.testcase('https://software-testing.ru/lms/mod/assign/view.php?id=244504', 'EDIT @ without AT')
+    @allure.description(
+        "Попытаемся изменить email пользователя, будучи авторизованными тем же пользователем, на новый email без символа @.")
+    @allure.severity(allure.severity_level.NORMAL)
     def test_edit_user_without_at(self):
         # REGISTER - создаем нового пользователя
         register_data = self.prepare_registration_data()
@@ -162,7 +184,13 @@ class TestUserEdit(BaseCase):
         Assertions.assert_json_value_by_name(response4, "email", f"{email}",
                                              f"Полученный адрес отличается от целевого {email}")
 
-    # Попытаемся изменить firstName пользователя, будучи авторизованными тем же пользователем, на очень короткое значение в один символ
+    @allure.step
+    @allure.link('https://software-testing.ru/lms/mod/assign/view.php?id=244504')
+    @allure.title("Edit FirstName to short one with authorization")
+    @allure.testcase('https://software-testing.ru/lms/mod/assign/view.php?id=244504', 'Edit FirstName to short one with authorization')
+    @allure.description(
+        "Попытаемся изменить firstName пользователя, будучи авторизованными тем же пользователем, на очень короткое значение в один символ.")
+    @allure.severity(allure.severity_level.TRIVIAL)
     def test_edit_firstname_to_short_value(self):
         # REGISTER - создаем нового пользователя
         register_data = self.prepare_registration_data()

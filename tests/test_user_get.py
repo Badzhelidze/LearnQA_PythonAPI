@@ -1,9 +1,16 @@
+import allure
+
 from lib.assertions import Assertions
 from lib.base_case import BaseCase
 from lib.my_requests import MyRequests
 
 
+@allure.epic("Getting cases")
+@allure.story("Cases for testing USER information")
 class TestUserGet(BaseCase):
+    @allure.title("GET USER DATA")
+    @allure.description("Получение данных о пользователе без авторизации")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_get_user_details_not_auth(self):
         response = MyRequests.get("/user/2")
         Assertions.assert_json_has_key(response, "username")
@@ -11,12 +18,16 @@ class TestUserGet(BaseCase):
         Assertions.assert_json_has_not_key(response, "firstName")
         Assertions.assert_json_has_not_key(response, "lastName")
 
+    @allure.description("Setup - метод для хранения credentials")
     def setup(self):
         self.data = {
             'email': 'vinkotov@example.com',
             'password': '1234'
         }
 
+    @allure.title("GET USER INFORMATION AFTER AUTHORIZATION")
+    @allure.description("Метод получения информации о пользователе после авторизации")
+    @allure.severity(allure.severity_level.NORMAL)
     def test_get_user_details_auth_as_same_user(self):
         response1 = MyRequests.post("/user/login", data=self.data)
 
@@ -31,8 +42,14 @@ class TestUserGet(BaseCase):
         expected_fields = ["username", "email", "firstName", "lastName"]
         Assertions.assert_json_has_keys(response2, expected_fields)
 
-    # Нужно написать тест, который авторизовывается одним пользователем, но получает данные другого (т.е. с другим ID).
-    # И убедиться, что в этом случае запрос также получает только username, так как мы не должны видеть остальные данные чужого пользователя.
+    @allure.link('https://software-testing.ru/lms/mod/assign/view.php?id=244503')
+    @allure.title("GET ALIEN USER INFORMATION WITH AUTHORIZATION BY FIRST")
+    @allure.testcase('https://software-testing.ru/lms/mod/assign/view.php?id=244503',
+                     'GET ALIEN USER INFORMATION WITH AUTHORIZATION BY FIRST')
+    @allure.description(
+        "Нужно написать тест, который авторизовывается одним пользователем, но получает данные другого (т.е. с другим ID). "
+        "И убедиться, что в этом случае запрос также получает только username, так как мы не должны видеть остальные данные чужого пользователя.")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_get_user_details_auth_as_other_user(self):
         response1 = MyRequests.post("/user/login", data=self.data)
 

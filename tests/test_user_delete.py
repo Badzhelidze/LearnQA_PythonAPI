@@ -1,10 +1,14 @@
 import time
 
+import allure
+
 from lib.assertions import Assertions
 from lib.base_case import BaseCase
 from lib.my_requests import MyRequests
 
 
+@allure.epic("Deleting Cases")
+@allure.story("Cases for testing deleting")
 class TestUserDelete(BaseCase):
     def setup(self):
         self.data = {
@@ -12,7 +16,12 @@ class TestUserDelete(BaseCase):
             'password': '1234'
         }
 
-    # NEGATIVE - Пытаемся удалить пользователя с ID = 2, будучи авторизованным под ним.
+    @allure.link('https://software-testing.ru/lms/mod/assign/view.php?id=244505')
+    @allure.title("Delete user with ID = 2 with authorization")
+    @allure.testcase('https://software-testing.ru/lms/mod/assign/view.php?id=244505',
+                     'Delete user with ID = 2 with authorization')
+    @allure.description("NEGATIVE - Пытаемся удалить пользователя с ID = 2, будучи авторизованным под ним.")
+    @allure.severity(allure.severity_level.NORMAL)
     def test_user_deleting_for_id(self):
         # AUTHORIZATION - авторизуемся под пользователем с ID = 2.
         response1 = MyRequests.post("/user/login", data=self.data)
@@ -35,7 +44,12 @@ class TestUserDelete(BaseCase):
         expected_fields = ["id", "username", "email", "firstName", "lastName"]
         Assertions.assert_json_has_keys(response3, expected_fields)
 
-    # POSITIVE - Создать пользователя, авторизоваться из-под него, удалить, затем попробовать получить его данные по ID и убедиться, что пользователь действительно удален.
+    @allure.link('https://software-testing.ru/lms/mod/assign/view.php?id=244505')
+    @allure.title("Try CRUD with new user")
+    @allure.testcase('https://software-testing.ru/lms/mod/assign/view.php?id=244505', 'Try CRUD with new user')
+    @allure.description(
+        "POSITIVE - Создать пользователя, авторизоваться из-под него, удалить, затем попробовать получить его данные по ID и убедиться, что пользователь действительно удален.")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_new_user_deleting(self):
         # Регистрируем нового пользователя
         register_data = self.prepare_registration_data()
@@ -72,7 +86,11 @@ class TestUserDelete(BaseCase):
         print(response4.content)
         assert "User not found" in response4.content.decode(), f"Внимание! Обнаружен искомый ID = {user_id}, пользователь мог остаться в живых!"
 
-    # NEGATIVE - попробовать удалить пользователя, будучи авторизованными под другим пользователем.
+    @allure.link('https://software-testing.ru/lms/mod/assign/view.php?id=244505')
+    @allure.title("Try CRUD with new alien user")
+    @allure.testcase('https://software-testing.ru/lms/mod/assign/view.php?id=244505', 'Try CRUD with new alien user')
+    @allure.description("NEGATIVE - попробовать удалить пользователя, будучи авторизованными под другим пользователем.")
+    @allure.severity(allure.severity_level.CRITICAL)
     def test_user_deleting_with_alien_id(self):
         # Регистрируем первого пользователя
         register_data = self.prepare_registration_data()
